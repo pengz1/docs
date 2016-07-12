@@ -22,3 +22,4 @@ RackHD Users Guide
 .. include:: arp_poller.rst
 .. include:: boot_settings.rst
 .. include:: ssdp.rst
+.. include:: notification.rst
