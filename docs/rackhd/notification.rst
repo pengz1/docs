@@ -22,7 +22,7 @@ An example of event message format is below:
         state: 'discovered'
     }
 
-The attributes of the node event format:
+The required attributes of the node event includes:
 
 ========= ====== =================================
 Attribute Type   Description
@@ -31,6 +31,8 @@ nodeId    String The node's unique identifier
 nodeType  String The node type could be `compute`, `pdu`, `switch`, `mgmt`, `enclosure`
 state     String The node's state event pre-defined by RackHD, See events_ for more details.
 ========= ====== =================================
+
+Other optional attributes can also be added if necessary.
 
 .. _events:
 
@@ -63,5 +65,15 @@ All node state events:
 |               |           | pdu,       |                                  | it includes node,catalogs,     |
 |               |           | mgmt,      |                                  | relationships with other       |
 |               |           | enclosure  |                                  | models, etc.                   |
++---------------+-----------+------------+----------------------------------+--------------------------------+
+| accessible    | one-shot  | compute,   | Event occurs when node telemetry | Triggered when any poller of a |
+|               |           | switch,    | OBM service (IPMI or SNMP) is    | node become accessible while   |
+|               |           | pdu,       | accessible                       | the node's state is            |
+|               |           | mgmt       |                                  | inaccessilbe or null           |
++---------------+-----------+------------+----------------------------------+--------------------------------+
+| inaccessible  | one-shot  | compute,   | Event occurs when node telemetry | Triggered when all pollers     |
+|               |           | switch,    | OBM service (IPMI or SNMP) is    | of a node become inaccessible. |
+|               |           | pdu,       | inaccessible                     |                                |
+|               |           | mgmt       |                                  |                                |
 +---------------+-----------+------------+----------------------------------+--------------------------------+
 
