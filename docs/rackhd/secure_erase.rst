@@ -1,7 +1,7 @@
 Disk Secure Erase Workflow Support
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Secure Erase (SE) also known as a wipe is to destroy data on a disk so that data can't or is difficult to be retrieved. RackHD implements solution to do disk Secure Erase.
+Secure Erase (SE) also known as a wipe is to destroy data on a disk so that data can't or is difficult to be retrieved. RackHD implements solutions to do disk Secure Erase.
 
 Disk Secure Erase Workflow API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -139,7 +139,8 @@ Disk Secure Erase Workflow Notes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Please pay attention to below items if you are using RackHD secure erase function:
 
-* **Use RackHD to manage RAID operation**. RackHD relies on its catalog data for secure erase. If RAID operation is not done via RackHD, RackHD secure erase workflow is not able to recognize drive names given. A suggestion is to re-run discovery for the compute node if you did changed RAID configure not using RackHD
+* **RackHD Secure Erase is not fully tested**. RackHD secure erase is tested on RackHD supported servers with only one LSI RAID controller. Servers with multiple RAID controllers disk array enclosures or non-LSI RAID controllers are not tested.
+* **Use RackHD to manage RAID operation**. RackHD relies on drive related catalog data for secure erase. If RAID operation is not done via RackHD, RackHD secure erase workflow may not be able to recognize drive names given. If RAID configurations are changed, a suggestion is to re-catalog drive related catalogs before running secure erase. 
 * **Secure Erase is time-consuming**. Hdparm, sg_format and sg_sanitize will leverage drive firmware to do secure erase, even so it might take hours for a 1T drive. Scrub is overwriting data to disks and its speed is depends on argument you chose. For a "gutmann" argument, it will take days to erase a 1T drive.
-* **Cancel Secure Erase workflow can't cancel secure erase operation**. Hdparm, sg_sanitize and sg_format are leverage drive firmware to do secure erase, once started there is no proper way to ask drive firmware to stop it till now.
-* **Power cycle is risky**. Except for scrub tool, other tools are actually issue a command to drive and drive itself will control secure erase. That means once you started secure erase workflow, you can't stop it until it is completed. If you power cycled compute node under this case, drive might be frozen, locked or in worst case bricked. All data will not be accessible. If this happens, you need extra effort to bring your disks back to normal status.
+* **Cancel Secure Erase workflow can't cancel ongoing secure erase operation**. Hdparm, sg_sanitize and sg_format are leverage drive firmware to do secure erase. Once started RackHD has no proper way to ask drive firmware to stop it, secure erase operation will continue until finished.
+* **Power cycle is risky**. It is risky to power cycled a server with ongoing secure erase. Drive might be frozen, locked or in worst case bricked. All data will not be accessible. If this happens, you need extra effort to bring your disks back to normal status.
